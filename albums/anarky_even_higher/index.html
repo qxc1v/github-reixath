@@ -1,49 +1,829 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Album</title>
+<title>Anarky Even Higher</title>
+<link rel="icon" type="image/x-icon" href="../../reixath.jpg">
 
 <style>
+:root {
+  --bg: #07070a;
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.62);
+  --ink: rgba(0, 0, 0, 0.55);
+  --stroke: rgba(255, 255, 255, 0.14);
+  --stroke2: rgba(255, 255, 255, 0.08);
+  --a: #ff2d6d;
+  --b: #22f3ff;
+  --c: #b993ff;
+  --radius: 22px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background: black;
-  color: white;
-  font-family: Arial;
-  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255, 45, 109, 0.16), transparent 35%),
+    radial-gradient(circle at 88% 76%, rgba(34, 243, 255, 0.14), transparent 38%),
+    radial-gradient(circle at 48% 52%, rgba(185, 147, 255, 0.1), transparent 45%),
+    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.88)),
+    url("anarky_arkaplan.jpg"),
+    url("anarky_arkaplan.png"),
+    url("anarky_arkaplan.jpeg");
+  background-position: center, center, center, center, center, center, center;
+  background-size: cover, cover, cover, cover, cover, cover, cover;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed, fixed, fixed, fixed, fixed, fixed, fixed;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 86px 22px 120px;
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.top-back-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+  border: 1px solid var(--stroke);
+  background: rgba(10, 10, 12, 0.6);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.top-back-button:hover {
+  background: rgba(255, 45, 109, 0.18);
+  border-color: rgba(255, 45, 109, 0.55);
+  transform: translateY(-1px);
+}
+
+/* poster-left */
+.poster {
+  position: relative;
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background:
+    linear-gradient(180deg, rgba(10, 10, 12, 0.72), rgba(10, 10, 12, 0.9));
+  overflow: hidden;
+  min-height: 620px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+}
+
+.poster::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(34, 243, 255, 0.22), transparent 36%),
+    radial-gradient(circle at 82% 78%, rgba(255, 45, 109, 0.18), transparent 36%),
+    linear-gradient(90deg, rgba(255,255,255,0.06), transparent 40%);
+  pointer-events: none;
+}
+
+.poster-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  padding: 22px;
+}
+
+.poster-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.poster-title {
+  margin: 0;
+  font-size: 40px;
+  line-height: 0.9;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 0 26px rgba(34, 243, 255, 0.18);
+}
+
+.poster-kicker {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.badge {
+  border: 1px solid var(--stroke2);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.hero-logo {
+  border-radius: 18px;
+  border: 1px solid var(--stroke2);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+
+.hero-logo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(130deg, rgba(34, 243, 255, 0.14), transparent 35%),
+    linear-gradient(320deg, rgba(255, 45, 109, 0.12), transparent 35%);
+  pointer-events: none;
+}
+
+.hero-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.hero-note {
+  border-radius: 18px;
+  border: 1px solid var(--stroke2);
+  background: rgba(0, 0, 0, 0.28);
+  padding: 16px 16px 14px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.hero-note h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.76);
+}
+
+.hero-note p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.64);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.tracklist {
+  display: grid;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 .track {
-  margin: 10px;
+  width: 100%;
+  border: 1px solid var(--stroke2);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 12px 14px;
   cursor: pointer;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: center;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
 }
 
 .track:hover {
-  color: red;
+  transform: translateX(3px);
+  border-color: rgba(34, 243, 255, 0.35);
+  background: rgba(34, 243, 255, 0.06);
+}
+
+.track.is-active {
+  border-color: rgba(255, 45, 109, 0.5);
+  background: linear-gradient(90deg, rgba(255, 45, 109, 0.12), rgba(34, 243, 255, 0.08));
+}
+
+.track-index {
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.66);
+  font-size: 12px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding-right: 10px;
+}
+
+.track-name {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* right panel */
+.side {
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: rgba(0, 0, 0, 0.32);
+  padding: 18px;
+  min-height: 620px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+}
+
+.side::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(185, 147, 255, 0.18), transparent 40%),
+    radial-gradient(circle at 82% 86%, rgba(34, 243, 255, 0.16), transparent 44%);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.side-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}
+
+.side-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px dashed rgba(255,255,255,0.18);
+  padding-bottom: 12px;
+}
+
+.side-title h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+}
+
+.hint {
+  color: rgba(255,255,255,0.55);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+/* dock player (bottom fixed) */
+.dock {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 999;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 45, 109, 0.14), rgba(34, 243, 255, 0.12), rgba(185, 147, 255, 0.12));
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.dock-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  padding: 14px 14px 12px;
+  align-items: center;
+}
+
+.np {
+  min-width: 0;
+}
+
+.np-title {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+}
+
+.np-track {
+  margin-top: 6px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dock-controls {
+  display: grid;
+  grid-template-columns: 42px 52px 42px;
+  gap: 8px;
+  align-items: center;
+}
+
+.dbtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.9);
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.dbtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(34, 243, 255, 0.35);
+  background: rgba(34, 243, 255, 0.08);
+}
+
+.dplay {
+  width: 52px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 45, 109, 0.32);
+  background: rgba(255, 45, 109, 0.12);
+  font-weight: 900;
+}
+
+.meter {
+  padding: 0 14px 12px;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.bar {
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.bar > div {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+  color: rgba(255,255,255,0.68);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.vol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.vol span {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+
+.vol input {
+  width: 100%;
+  accent-color: var(--b);
+}
+
+audio { display: none; }
+
+.credit {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  opacity: 0.95;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.credit:hover {
+  opacity: 1;
+  color: #ffd56f;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 980px) {
+  .page {
+    grid-template-columns: 1fr;
+    padding: 78px 14px 40px;
+  }
+
+  .poster-title {
+    font-size: 30px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  body { background-attachment: scroll; }
+  .page { padding: 56px 8px 118px; gap: 8px; }
+  .top-back-button { top: 8px; left: 8px; padding: 7px 8px; font-size: 10px; }
+
+  .poster {
+    min-height: 0;
+    border-radius: 12px;
+  }
+
+  .poster-inner { padding: 10px; gap: 8px; }
+
+  .poster-top {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .poster-title {
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    line-height: 0.95;
+  }
+
+  .poster-kicker {
+    margin-top: 4px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .badge { font-size: 8px; padding: 5px 6px; border-radius: 8px; }
+  .hero-note { padding: 10px; border-radius: 10px; }
+  .hero-note p { font-size: 11px; line-height: 1.5; }
+  .hero-logo { border-radius: 10px; }
+
+  .tracklist { gap: 6px; }
+  .track {
+    border-radius: 8px;
+    grid-template-columns: 28px 1fr;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .track-name { font-size: 11px; letter-spacing: 0.04em; }
+  .track-index { font-size: 9px; padding-right: 6px; }
+
+  .side { display: none; }
+
+  .dock {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border-radius: 10px;
+  }
+
+  .dock-inner {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .np-title { font-size: 9px; letter-spacing: 0.12em; }
+  .np-track { margin-top: 3px; font-size: 11px; }
+  .dock-controls { grid-template-columns: 30px 38px 30px; gap: 6px; }
+  .dbtn { width: 30px; height: 30px; border-radius: 8px; font-size: 10px; }
+  .dplay { width: 38px; height: 30px; border-radius: 8px; }
+
+  .meter { padding: 0 8px 6px; grid-template-columns: 1fr; gap: 4px; }
+  .bar { height: 8px; }
+  .time { text-align: right; font-size: 10px; }
+  .vol { padding: 0 8px 8px; gap: 6px; }
+  .vol span { font-size: 9px; letter-spacing: 0.08em; }
+
+  .credit { font-size: 10px; right: 8px; bottom: 4px; }
 }
 </style>
 </head>
 
 <body>
+<button class="top-back-button" onclick="goBack()">Geri Dön</button>
 
-<h1>ANARKY HIGH</h1>
+<main class="page">
+  <section class="poster">
+    <div class="poster-inner">
+      <div class="poster-top">
+        <div>
+          <h1 class="poster-title">ANARKY<br>EVEN<br>HIGHER</h1>
+          <div class="poster-kicker">TRACKLIST / LYRICS</div>
+        </div>
+        <div class="badge">KILLOKI ARCHIVE</div>
+      </div>
 
-<div onclick="play('tracks/01.mp3')" class="track">1. Track 1</div>
-<div onclick="play('tracks/02.mp3')" class="track">2. Track 2</div>
+      <div class="hero">
+        <div class="hero-logo">
+          <img src="anarky_logo.jpg" alt="Anarky Logo" id="albumLogo">
+        </div>
+        <div class="hero-note">
+          <h2>Not</h2>
+          <p>Bu sayfa “poster + dock player” düzeninde. Track satırları yalın tutuldu; mp3 dosyalarını sen sonra manuel bağlarsın.</p>
+          <p style="opacity:0.85">Kısayollar: Space = play/pause, ←/→ = önceki/sonraki.</p>
+        </div>
+      </div>
 
-<audio id="player" controls></audio>
+      <div class="tracklist" id="trackList">
+        <button class="track" onclick="playTrack(0)">
+          <div class="track-index">01</div>
+          <div class="track-name">20DK GITAR SOLO</div>
+        </button>
+        <button class="track" onclick="playTrack(1)">
+          <div class="track-index">02</div>
+          <div class="track-name">XNXX</div>
+        </button>
+        <button class="track" onclick="playTrack(2)">
+          <div class="track-index">03</div>
+          <div class="track-name">MOSH-PIT</div>
+        </button>
+        <button class="track" onclick="playTrack(3)">
+          <div class="track-index">04</div>
+          <div class="track-name">KORKUM YOK</div>
+        </button>
+        <button class="track" onclick="playTrack(4)">
+          <div class="track-index">05</div>
+          <div class="track-name">#FREELANCE</div>
+        </button>
+        <button class="track" onclick="playTrack(5)">
+          <div class="track-index">06</div>
+          <div class="track-name">OR*SPULARIMDAN BIRI</div>
+        </button>
+      </div>
+    </div>
+  </section>
 
-<br><br>
-<button onclick="goBack()">← Geri</button>
+  <aside class="side">
+    <div class="side-inner">
+      <div class="side-title">
+        <h2>Sayfa</h2>
+        <div class="hint">Poster Layout</div>
+      </div>
+
+      <div class="hero-note" style="min-height: 100%; align-content: center;">
+        <h2>Detay</h2>
+        <p>Sağ paneli “info board” olarak bıraktım. İstersen buraya albüm açıklaması, linkler, ya da kapakla ilgili lore ekleriz.</p>
+        <p style="opacity:0.8">Player altta sabit dock olarak duruyor; her sayfada aynı hissi verir.</p>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥</div>
+
+<div class="dock" aria-label="player dock">
+  <div class="dock-inner">
+    <div class="np">
+      <p class="np-title">PLAYER DOCK</p>
+      <div class="np-track" id="nowPlaying">Parça seçilmedi</div>
+    </div>
+    <div class="dock-controls">
+      <button class="dbtn" onclick="previousTrack()">&#9198;</button>
+      <button class="dbtn dplay" id="playBtn" onclick="togglePlayPause()">&#9654;</button>
+      <button class="dbtn" onclick="nextTrack()">&#9197;</button>
+    </div>
+  </div>
+  <div class="meter">
+    <div class="bar" id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
+    <div class="time" id="timeLabel">0:00 / 0:00</div>
+  </div>
+  <div class="vol">
+    <span>Vol</span>
+    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.7" onchange="setVolume(this.value)">
+  </div>
+  <audio id="player"></audio>
+</div>
 
 <script>
-function play(src){
-  document.getElementById("player").src = src;
+const tracks = [
+  { title: "20DK GITAR SOLO", src: null },
+  { title: "XNXX", src: null },
+  { title: "MOSH-PIT", src: null },
+  { title: "KORKUM YOK", src: null },
+  { title: "#FREELANCE", src: null },
+  { title: "OR*SPULARIMDAN BIRI", src: null }
+];
+
+const trackRows = document.querySelectorAll(".track");
+const player = document.getElementById("player");
+const playBtn = document.getElementById("playBtn");
+const nowPlaying = document.getElementById("nowPlaying");
+const progressBar = document.getElementById("progressBar");
+const progressFill = document.getElementById("progressFill");
+const timeLabel = document.getElementById("timeLabel");
+const albumLogo = document.getElementById("albumLogo");
+
+let currentTrackIndex = -1;
+player.volume = 0.7;
+
+function playTrack(index) {
+  if (!tracks[index] || !tracks[index].src) {
+    nowPlaying.textContent = tracks[index].title + " - dosya yakinda eklenecek";
+    updateActiveTrack(index);
+    player.pause();
+    updatePlayButton(false);
+    return;
+  }
+
+  currentTrackIndex = index;
+  player.src = tracks[index].src;
+  player.play().catch(() => {});
+  nowPlaying.textContent = tracks[index].title;
+  updateActiveTrack(index);
+  updatePlayButton(true);
 }
 
-function goBack(){
-  window.location.href = "../../START.html";
+function updateActiveTrack(index) {
+  trackRows.forEach((row, rowIndex) => {
+    row.classList.toggle("is-active", rowIndex === index);
+  });
+}
+
+function togglePlayPause() {
+  if (!player.src && currentTrackIndex < 0) {
+    playTrack(0);
+    return;
+  }
+  if (player.paused) {
+    player.play().catch(() => {});
+    updatePlayButton(true);
+    if (currentTrackIndex >= 0) {
+      nowPlaying.textContent = tracks[currentTrackIndex].title + " - caliyor";
+    }
+  } else {
+    player.pause();
+    updatePlayButton(false);
+    if (currentTrackIndex >= 0) {
+      nowPlaying.textContent = tracks[currentTrackIndex].title + " - duraklatildi";
+    }
+  }
+}
+
+function nextTrack() {
+  for (let i = currentTrackIndex + 1; i < tracks.length; i++) {
+    if (tracks[i].src) {
+      playTrack(i);
+      return;
+    }
+  }
+}
+
+function previousTrack() {
+  for (let i = currentTrackIndex - 1; i >= 0; i--) {
+    if (tracks[i].src) {
+      playTrack(i);
+      return;
+    }
+  }
+}
+
+function setVolume(value) {
+  player.volume = Number(value);
+}
+
+function seek(event) {
+  if (!player.duration) return;
+  const rect = progressBar.getBoundingClientRect();
+  const percent = (event.clientX - rect.left) / rect.width;
+  player.currentTime = percent * player.duration;
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds)) return "0:00";
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${secs}`;
+}
+
+function updatePlayButton(isPlaying) {
+  playBtn.innerHTML = isPlaying ? "&#10074;&#10074;" : "&#9654;";
+}
+
+player.addEventListener("timeupdate", () => {
+  const percent = player.duration ? (player.currentTime / player.duration) * 100 : 0;
+  progressFill.style.width = percent + "%";
+  timeLabel.textContent = `${formatTime(player.currentTime)} / ${formatTime(player.duration)}`;
+});
+
+player.addEventListener("ended", nextTrack);
+player.addEventListener("play", () => {
+  updatePlayButton(true);
+  if (currentTrackIndex >= 0) {
+    nowPlaying.textContent = tracks[currentTrackIndex].title + " - caliyor";
+  }
+});
+player.addEventListener("pause", () => {
+  updatePlayButton(false);
+  if (currentTrackIndex >= 0 && player.currentTime > 0 && !player.ended) {
+    nowPlaying.textContent = tracks[currentTrackIndex].title + " - duraklatildi";
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.code === "Space") {
+    event.preventDefault();
+    togglePlayPause();
+  } else if (event.code === "ArrowRight") {
+    event.preventDefault();
+    nextTrack();
+  } else if (event.code === "ArrowLeft") {
+    event.preventDefault();
+    previousTrack();
+  }
+});
+
+window.addEventListener("load", () => {
+  const trackParam = Number(new URLSearchParams(window.location.search).get("track"));
+  if (!Number.isNaN(trackParam) && trackParam > 0) {
+    const index = trackParam - 1;
+    if (index >= 0 && index < tracks.length) {
+      playTrack(index);
+    }
+  }
+});
+
+if (albumLogo) {
+  albumLogo.addEventListener("error", () => {
+    if (!albumLogo.dataset.fallbackStep) {
+      albumLogo.dataset.fallbackStep = "1";
+      albumLogo.src = "anarky_logo.png";
+    } else if (albumLogo.dataset.fallbackStep === "1") {
+      albumLogo.dataset.fallbackStep = "2";
+      albumLogo.src = "anarky_logo.jpeg";
+    }
+  });
+}
+
+function goBack() {
+  window.location.href = "../../start.html";
 }
 </script>
-
 </body>
 </html>

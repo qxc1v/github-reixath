@@ -292,6 +292,64 @@ body {
         width: 100%;
     }
 }
+
+@media (max-width: 700px) {
+    body { background-attachment: scroll; }
+
+    .page {
+        padding: 62px 10px 126px;
+        gap: 10px;
+    }
+
+    .tracklist-header {
+        background: rgba(0,0,0,.28);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 10px;
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .tracklist-header img { width: 34px; height: 34px; }
+    .tracklist-header h1 { font-size: 18px; letter-spacing: .08em; }
+
+    .track { padding: 9px; gap: 8px; border-radius: 9px; }
+    .track-number { min-width: 20px; font-size: 12px; }
+    .track-title { font-size: 12px; }
+    .track-meta { font-size: 9px; line-height: 1.25; }
+
+    .panel-side {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        width: auto;
+        z-index: 20;
+        gap: 8px;
+    }
+
+    .panel-side .logo-card { display: none; }
+
+    .player-container {
+        border-radius: 12px;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .player-title { font-size: 10px; letter-spacing: .12em; }
+    .player-controls { gap: 8px; }
+    .player-btn { min-width: 34px; padding: 7px; font-size: 14px; }
+    #playBtn { min-width: 42px; padding: 8px 10px; font-size: 16px; }
+    .time-display { font-size: 10px; margin: 4px 0; }
+
+    .back-button {
+        width: 100%;
+        text-align: center;
+        padding: 9px;
+        font-size: 11px;
+    }
+
+    .credit { font-size: 10px; bottom: 4px; right: 8px; }
+}
 </style>
 </head>
 
@@ -344,24 +402,21 @@ body {
                 <div class="track-text">
                     <div class="track-title">ITADAKIMASU (INTERLUDE)</div>
                     <div class="track-meta">feat. RECKOL • produced by RECKOL</div>
+                                    <div class="track-text">
+
                 </div>
             </div>
-            <div class="track" onclick="playTrack('tracks/07.mp3')">
-                <div class="track-number">7.</div>
-                <div class="track-text">
-                    <div class="track-title">"YAKINDA" MOSPHIT</div>
-                    <div class="track-meta">feat. BEGE, YUNG OUZO, DEHA INC. • produced by CVCTUS</div>
-                </div>
+          
             </div>
             <div class="track" onclick="playTrack('tracks/tedbuny.mp3')">
-                <div class="track-number">8.</div>
+                <div class="track-number">7.</div>
                 <div class="track-text">
                     <div class="track-title">TED BUNDY</div>
                     <div class="track-meta">produced by TVTO, WOX</div>
                 </div>
             </div>
             <div class="track" onclick="playTrack('tracks/fulltimeanarky.mp3')">
-                <div class="track-number">9.</div>
+                <div class="track-number">8.</div>
                 <div class="track-text">
                     <div class="track-title">FULL-TIME ANARKY</div>
                     <div class="track-meta">produced by ZETSU</div>
@@ -408,7 +463,6 @@ const tracks = [
     'tracks/pembeyalanlar.mp3',
     'tracks/duydugundogru.mp3',
     'tracks/いただきます.mp3',
-    'tracks/07.mp3',
     'tracks/tedbuny.mp3',
     'tracks/fulltimeanarky.mp3'
 ];
@@ -499,6 +553,16 @@ player.addEventListener('timeupdate', () => {
 });
 
 player.addEventListener('ended', nextTrack);
+
+window.addEventListener('load', () => {
+    const trackParam = Number(new URLSearchParams(window.location.search).get('track'));
+    if (!Number.isNaN(trackParam) && trackParam > 0) {
+        const index = trackParam - 1;
+        if (tracks[index]) {
+            playTrack(tracks[index]);
+        }
+    }
+});
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {

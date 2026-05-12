@@ -283,6 +283,69 @@ body {
         width: 100%;
     }
 }
+
+@media (max-width: 700px) {
+    body { background-attachment: scroll; }
+
+    .page {
+        padding: 62px 10px 126px;
+        gap: 10px;
+    }
+
+    .tracklist-header {
+        background: rgba(0,0,0,0.35);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 8px 10px;
+    }
+
+    .tracklist-header img { width: 36px; height: 36px; }
+    .tracklist-header h1 { font-size: 19px; letter-spacing: .08em; }
+
+    .tracklist-grid { gap: 8px; }
+
+    .track {
+        padding: 10px;
+        gap: 8px;
+        border-radius: 10px;
+    }
+
+    .track-number { min-width: 22px; font-size: 12px; }
+    .track-title { font-size: 13px; }
+
+    .panel-side {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        width: auto;
+        z-index: 20;
+        gap: 8px;
+    }
+
+    .panel-side .logo-card { display: none; }
+
+    .player-container {
+        border-radius: 12px;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .player-title { font-size: 10px; letter-spacing: .12em; }
+    .player-controls { gap: 8px; }
+    .player-btn { min-width: 34px; font-size: 14px; padding: 6px 8px; }
+    #playBtn { min-width: 42px; padding: 8px 9px; font-size: 16px; }
+    .time-display { font-size: 10px; margin: 4px 0; }
+
+    .back-button {
+        width: 100%;
+        text-align: center;
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .credit { font-size: 10px; bottom: 4px; right: 8px; }
+}
 </style>
 </head>
 
@@ -472,6 +535,16 @@ player.addEventListener('timeupdate', () => {
 });
 
 player.addEventListener('ended', nextTrack);
+
+window.addEventListener('load', () => {
+    const trackParam = Number(new URLSearchParams(window.location.search).get('track'));
+    if (!Number.isNaN(trackParam) && trackParam > 0) {
+        const index = trackParam - 1;
+        if (tracks[index]) {
+            playTrack(tracks[index]);
+        }
+    }
+});
 
 function goBack() {
     window.location.href = '../../start.html';

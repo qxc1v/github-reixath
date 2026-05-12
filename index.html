@@ -6,170 +6,471 @@
 <link rel="icon" type="image/x-icon" href="reixath.jpg">
 
 <style>
- html{
-    background-image: url(start_wallpaper.jpeg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: black;
+  :root{
+    --bg:#050506;
+    --text:rgba(255,255,255,.92);
+    --muted:rgba(255,255,255,.62);
+    --stroke:rgba(255,255,255,.14);
+    --a:#ff2d6d;
+    --b:#22f3ff;
+    --c:#b993ff;
+    --r:22px;
+  }
+
+  html{
+    background: var(--bg);
     min-height: 100%;
     overflow: hidden;
-}
-body{
+  }
+
+  body{
     margin:0;
     padding:0;
     min-height:100vh;
-    background: rgba(0,0,0,0.85);
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+    overflow-y:auto;
+    overflow-x:hidden;
+    color: var(--text);
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,45,109,0.14), transparent 36%),
+      radial-gradient(circle at 86% 72%, rgba(34,243,255,0.12), transparent 38%),
+      linear-gradient(rgba(0,0,0,.74), rgba(0,0,0,.9)),
+      url(start_wallpaper.jpeg) center/cover fixed no-repeat;
+  }
 
-h1{
-    text-align:center;
-    margin:20px auto 40px;
-    letter-spacing:3px;
-    color: crimson;
-    text-shadow: 0 0 20px rgba(255,0,0,0.4);
-    font-size: 48px;
-    font-weight: 900;
-}
-
-/* ALBUM GRID */
-.album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 20px;
+  .shell{
     max-width: 1200px;
-    margin: 0 auto 60px;
-}
+    margin: 0 auto;
+    padding: 22px 18px 84px;
+  }
 
-.album-card {
-    background: rgba(0,0,0,0.8);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
+  .hero{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: 22px 0 16px;
+    background: linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,0));
+    backdrop-filter: blur(10px);
+    overflow: visible;
+  }
+
+  .hero-row{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .search-box{
+    position: relative;
+    width: min(420px, 100%);
+  }
+
+  h1{
+    margin: 0;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: clamp(30px, 6vw, 56px);
+    font-weight: 900;
+    text-shadow: 0 0 26px rgba(34,243,255,0.14);
+  }
+
+  .search-wrap{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.45);
+    border-radius: 14px;
+    padding: 8px 10px;
+    width: 100%;
+    backdrop-filter: blur(8px);
+  }
+
+  .search-wrap span{
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .search-input{
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: .03em;
+  }
+
+  .search-input::placeholder{
+    color: rgba(255,255,255,0.45);
+  }
+
+  .search-info{
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .search-results{
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 60;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    background: rgba(0,0,0,0.48);
+    backdrop-filter: blur(8px);
+    padding: 10px;
+    display: none;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .search-results.active{
+    display: block;
+  }
+
+  .result-item{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .result-item.clickable{
+    cursor: pointer;
+    transition: background .14s ease;
+  }
+
+  .result-item.clickable:hover{
+    background: rgba(34,243,255,0.08);
+  }
+
+  .result-item:last-child{
+    border-bottom: 0;
+  }
+
+  .result-track{
+    font-size: 13px;
+    letter-spacing: .05em;
+    color: var(--text);
+  }
+
+  .result-album{
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .sub{
+    margin-top: 10px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+
+  .album-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .album-card{
+    border-radius: var(--r);
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.35);
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    backdrop-filter: blur(15px);
     position: relative;
-}
+    transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    box-shadow: 0 22px 70px rgba(0,0,0,0.42);
+  }
 
-.album-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(255,0,0,0.3);
-    border-color: rgba(255,0,0,0.3);
-}
+  .album-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(120deg, rgba(255,45,109,0.12), transparent 36%),
+                linear-gradient(300deg, rgba(34,243,255,0.12), transparent 36%);
+    opacity: .6;
+    pointer-events:none;
+  }
 
-.album-cover {
-    width: 100%;
-    height: 200px;
+  .album-card:hover{
+    transform: translateY(-3px);
+    border-color: rgba(34,243,255,0.34);
+    background: rgba(0,0,0,0.46);
+  }
+
+  .album-cover{
+    height: 180px;
     overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     position: relative;
-}
+  }
 
-.album-cover img {
-    width: 100%;
-    height: 100%;
+  .album-cover img{
+    width:100%;
+    height:100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
-}
+    display:block;
+    transform: scale(1.02);
+    transition: transform .26s ease;
+    filter: saturate(1.05) contrast(1.03);
+  }
 
-.album-card:hover .album-cover img {
-    transform: scale(1.1);
-}
+  .album-card:hover .album-cover img{
+    transform: scale(1.08);
+  }
 
-.album-info {
-    padding: 20px;
-    text-align: center;
-}
+  .album-info{
+    padding: 14px 14px 16px;
+    position: relative;
+    z-index: 1;
+  }
 
-.album-number {
-    display: inline-block;
-    background: linear-gradient(135deg, #d20000, #ff0000);
-    color: white;
+  .album-number{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.35);
     font-weight: 900;
-    font-size: 18px;
-    padding: 6px 12px;
-    border-radius: 50%;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 12px rgba(210,0,0,0.4);
-}
+    letter-spacing: .08em;
+    margin-bottom: 10px;
+  }
 
-.album-title {
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
+  .album-title{
     margin: 0;
+    font-size: 15px;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    letter-spacing: 1px;
-}
+  }
 
-.album-subtitle {
-    color: #ccc;
-    font-size: 14px;
+  .album-subtitle{
     margin: 8px 0 0;
-    opacity: 0.8;
-}
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
-/* MUSIC PLAYER */
-.music-player{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background: rgba(0,0,0,0.9);
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:12px;
-    padding:15px 20px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
-    backdrop-filter: blur(15px);
+  .music-player{
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1000;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.55);
+    overflow: hidden;
     display:flex;
     align-items:center;
-    gap:15px;
-    z-index:1000;
-}
-.music-player button{
-    background: linear-gradient(135deg, #d20000, #ff0000);
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    padding:8px 16px;
-    cursor:pointer;
-    font-size:14px;
-    font-weight:600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(210,0,0,0.4);
-}
-.music-player button:hover{
-    background: linear-gradient(135deg, #b00000, #d20000);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(176,0,0,0.5);
-}
-.music-player input{
-    width:100px;
-    accent-color: #d20000;
-}
+    gap: 10px;
+    padding: 8px 10px;
+  }
 
-/* CREDIT */
-.credit{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    color: crimson;
-    font-size:16px;
-    font-weight:700;
-    text-shadow: 0 0 14px rgba(255,0,0,0.6);
-    z-index:1000;
-    opacity:0.9;
-    cursor:pointer;
-    transition: all 0.3s ease;
-}
-.credit:hover{
-    opacity:1;
-    color:#ffd56f;
-    transform: translateY(-2px);
-}
+  .music-player::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(90deg, rgba(255,45,109,0.14), rgba(34,243,255,0.12), rgba(185,147,255,0.12));
+    opacity: .6;
+    pointer-events:none;
+  }
+
+  .music-player button{
+    position:relative;
+    z-index:1;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.3);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    transition: transform .16s ease, border-color .16s ease, background .16s ease;
+  }
+
+  .music-player button:hover{
+    transform: translateY(-1px);
+    border-color: rgba(34,243,255,0.34);
+    background: rgba(34,243,255,0.08);
+  }
+
+  .music-player input{
+    position:relative;
+    z-index:1;
+    width: 110px;
+    accent-color: var(--b);
+  }
+
+  .credit{
+    position: fixed;
+    bottom: 18px;
+    right: 22px;
+    z-index: 1001;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(0,0,0,0.65);
+    opacity: 0.92;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease, color .2s ease;
+  }
+
+  .credit:hover{
+    opacity: 1;
+    color: #ffd56f;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 700px){
+    body{
+      background-attachment: scroll;
+    }
+
+    .shell{
+      padding: 12px 10px 84px;
+      max-width: 100%;
+    }
+
+    .hero{
+      position: static;
+      padding: 8px 0 10px;
+      background: transparent;
+      backdrop-filter: none;
+    }
+
+    .hero-row{
+      align-items: center;
+      gap: 10px;
+    }
+
+    h1{
+      font-size: 24px;
+      letter-spacing: .1em;
+    }
+
+    .sub{
+      margin-top: 6px;
+      font-size: 10px;
+      letter-spacing: .1em;
+    }
+
+    .search-box{ width: 100%; }
+    .search-wrap{
+      border-radius: 10px;
+      padding: 7px 8px;
+    }
+
+    .album-grid{
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .album-card{
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      border-radius: 14px;
+      min-height: 92px;
+    }
+
+    .album-cover{
+      height: 100%;
+      min-height: 92px;
+      border-bottom: 0;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .album-info{
+      padding: 10px;
+      display: grid;
+      align-content: center;
+      gap: 4px;
+    }
+
+    .album-number{
+      width: 26px;
+      height: 26px;
+      margin-bottom: 0;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .album-title{
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .album-subtitle{
+      margin: 0;
+      font-size: 10px;
+      letter-spacing: .08em;
+    }
+
+    .music-player{
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 10px;
+      padding: 6px 8px;
+      gap: 6px;
+    }
+
+    .music-player button{
+      padding: 5px 7px;
+      border-radius: 8px;
+      font-size: 10px;
+    }
+
+    .music-player input{ width: 76px; }
+
+    .credit{
+      right: 10px;
+      bottom: 48px;
+      font-size: 10px;
+      opacity: .82;
+    }
+  }
+
+  @media (max-width: 420px){
+    h1{
+      letter-spacing: .12em;
+      font-size: 28px;
+    }
+
+    .search-wrap{
+      padding: 7px 8px;
+    }
+
+    .search-input{
+      font-size: 13px;
+    }
+  }
 
 </style>
 </head>
@@ -178,7 +479,21 @@ h1{
     
     
 
-<h1>𝓚𝓘̇𝓛𝓛𝓞𝓚𝓘̇</h1>
+<div class="shell">
+  <div class="hero">
+    <div class="hero-row">
+      <h1>𝓚𝓘̇𝓛𝓛𝓞𝓚𝓘̇</h1>
+      <div class="search-box">
+        <label class="search-wrap" for="albumSearch">
+          <span>Ara</span>
+          <input id="albumSearch" class="search-input" type="text" placeholder="Album veya track yaz...">
+        </label>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+    <div class="sub">Choose an album</div>
+    <div class="search-info" id="searchInfo">6 album listeleniyor</div>
+  </div>
 <audio id="bgMusic" src="lobi_start_drgrace.mp3" loop autoplay></audio>
 <div class="music-player">
     <button id="playPauseBtn">Pause</button>
@@ -189,7 +504,7 @@ h1{
 </div>
 
 <div class="album-grid">
-    <div class="album-card" onclick="openAlbum('albums/anarky_high/index.html')">
+    <div class="album-card" data-search="anarky high" data-album="ANARKY HIGH" data-tracks="SINKID-X|V 4 VENDETTA|S8N TYPE SHIT|MOSH-PIT|SEYTAN GIYER PRADA|KORKUM YOK|SILAH|XNXX|PHILIP MORRIS|BENIMLE GEL" onclick="openAlbum('albums/anarky_high/index.html')">
         <div class="album-cover">
             <img src="anarky_logo_start.png" alt="Anarky High">
         </div>
@@ -200,7 +515,7 @@ h1{
         </div>
     </div>
 
-    <div class="album-card" onclick="openAlbum('albums/lyrica/index.html')">
+    <div class="album-card" data-search="nollyyrica lyrica" data-album="NOLYYRICA" data-tracks="LYYRICA|SARI SACLI HOE|YARDIM ET TANRIM|PEMBE YALANLAR|DUYDUGUN DOGRU|ITADAKIMASU|MOSPHIT|TED BUNDY|FULL-TIME ANARKY" onclick="openAlbum('albums/lyrica/index.html')">
         <div class="album-cover">
             <img src="albums/lyrica/lyrica_logo.jpg" alt="Nollyric@">
         </div>
@@ -211,7 +526,7 @@ h1{
         </div>
     </div>
 
-    <div class="album-card" onclick="openAlbum('albums/drgrace/index.html')">
+    <div class="album-card" data-search="drg race drgrace" data-album="DRG RACE" data-tracks="NITRO|CORBACI 2|OXY BITTI|DREYKO TATILDE 2|UNDERGROUND PRODIGY|VERIFIED DRG RACE|NASCAR|SEHRIM BEREKETLI|LOCOMOTIF|DARTH MAUL|FLAG" onclick="openAlbum('albums/drgrace/index.html')">
         <div class="album-cover">
             <img src="albums/drgrace/himpentegram.jpg" alt="DRG Race">
         </div>
@@ -222,7 +537,7 @@ h1{
         </div>
     </div>
 
-    <div class="album-card" onclick="openAlbum('albums/trashgodtwins/index.html')">
+    <div class="album-card" data-search="trashgodtwins" data-album="TRASHGODTWINS" data-tracks="CORBACI|NO FUN|K4BUS|NO M3RCY|LOKIBOI" onclick="openAlbum('albums/trashgodtwins/index.html')">
         <div class="album-cover">
             <img src="albums/trashgodtwins/trashgodtwins_wallpaper.jpg" alt="Trashgodtwins">
         </div>
@@ -233,7 +548,7 @@ h1{
         </div>
     </div>
 
-    <div class="album-card" onclick="openAlbum('albums/mental_boom/index.html')">
+    <div class="album-card" data-search="mental boom" data-album="MENTAL BOOM" data-tracks="MENTAL BOOM|GECENIN RENKLERI|INSANLIK|KALMADI XAMANIM|13 HASTA" onclick="openAlbum('albums/mental_boom/index.html')">
         <div class="album-cover">
             <img src="albums/mental_boom/mental_boom_kapak.png" alt="Mental Boom">
         </div>
@@ -244,7 +559,7 @@ h1{
         </div>
     </div>
 
-    <div class="album-card" onclick="openAlbum('albums/anarky_even_higher/index.html')">
+    <div class="album-card" data-search="anarky even higher" data-album="ANARKY EVEN HIGHER" data-tracks="20DK GITAR SOLO|XNXX|MOSH-PIT|KORKUM YOK|FREELANCE|ORSPULARIMDAN BIRI" onclick="openAlbum('albums/anarky_even_higher/index.html')">
         <div class="album-cover">
             <img src="anarky_logo_start.png" alt="Anarky Even Higher">
         </div>
@@ -255,6 +570,7 @@ h1{
         </div>
     </div>
 </div>
+</div>
 
 <script>
 function openAlbum(path){
@@ -264,6 +580,10 @@ function openAlbum(path){
 const audio = document.getElementById('bgMusic');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const volumeSlider = document.getElementById('volumeSlider');
+const albumSearch = document.getElementById('albumSearch');
+const albumCards = Array.from(document.querySelectorAll('.album-card'));
+const searchInfo = document.getElementById('searchInfo');
+const searchResults = document.getElementById('searchResults');
 
 audio.volume = 0.5;
 playPauseBtn.textContent = 'Pause';
@@ -295,6 +615,77 @@ playPauseBtn.addEventListener('click', () => {
 
 volumeSlider.addEventListener('input', () => {
     audio.volume = volumeSlider.value;
+});
+
+function normalize(text) {
+    return (text || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
+
+function filterAlbums() {
+    const query = normalize(albumSearch.value.trim());
+    searchResults.innerHTML = '';
+
+    if (!query) {
+        searchResults.classList.remove('active');
+        searchInfo.textContent = `${albumCards.length} album listeleniyor`;
+        return;
+    }
+
+    const results = [];
+
+    // Special strict rule: "drexath" only appears on exact full match.
+    if (query === 'drexath') {
+        results.push({
+            albumName: 'DREXATH',
+            trackName: 'DREXATH',
+            albumPath: 'albums/drexath/index.html',
+            trackIndex: undefined
+        });
+    }
+
+    albumCards.forEach((card) => {
+        const albumName = card.dataset.album || card.querySelector('.album-title')?.textContent || '';
+        const albumPath = card.getAttribute('onclick')?.match(/openAlbum\('([^']+)'\)/)?.[1] || '';
+        const trackList = (card.dataset.tracks || '').split('|').map((t) => t.trim()).filter(Boolean);
+
+        trackList.forEach((trackName, index) => {
+            const haystack = normalize(`${albumName} ${trackName}`);
+            if (haystack.includes(query)) {
+                results.push({ albumName, trackName, albumPath, trackIndex: index });
+            }
+        });
+    });
+
+    if (!results.length) {
+        searchResults.classList.add('active');
+        searchResults.innerHTML = '<div class="result-item"><div class="result-track">Sonuç bulunamadı</div><div class="result-album">Arama</div></div>';
+        searchInfo.textContent = '0 sonuc';
+        return;
+    }
+
+    const limited = results.slice(0, 20);
+    searchResults.classList.add('active');
+    searchResults.innerHTML = limited
+        .map((item) => `<div class="result-item clickable" data-path="${item.albumPath}" data-track="${item.trackIndex ?? ''}"><div class="result-track">${item.trackName}</div><div class="result-album">${item.albumName}</div></div>`)
+        .join('');
+    searchInfo.textContent = `${results.length} track sonucu`;
+}
+
+albumSearch.addEventListener('input', filterAlbums);
+searchResults.addEventListener('click', (event) => {
+    const item = event.target.closest('.result-item.clickable');
+    if (!item) return;
+    const path = item.dataset.path;
+    const trackIndex = item.dataset.track;
+    if (!path) return;
+    if (trackIndex !== undefined) {
+        openAlbum(`${path}?track=${Number(trackIndex) + 1}`);
+    } else {
+        openAlbum(path);
+    }
 });
 </script>
 

@@ -368,6 +368,64 @@ audio {
     height: 170px;
   }
 }
+
+@media (max-width: 700px) {
+  body { background-attachment: scroll; }
+  .container {
+    height: auto;
+    min-height: 100vh;
+    padding: 58px 8px 126px;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .left-side,
+  .right-side {
+    max-width: 100%;
+  }
+
+  .album-title { font-size: 22px; margin-bottom: 8px; text-align: left; letter-spacing: 1px; }
+
+  .tracks-list { gap: 4px; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 8px; }
+
+  .track {
+    font-size: 11px;
+    padding: 8px 6px;
+    border-radius: 8px;
+  }
+
+  .cd-container {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    border-radius: 12px;
+    padding: 8px;
+  }
+
+  .cd-inner {
+    width: 100%;
+    max-width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .controls-panel { gap: 8px; margin-top: 10px; }
+  .control-buttons { gap: 8px; }
+  .player-action { width: 36px; height: 36px; font-size: 14px; }
+
+  .progress-wrapper, .volume-control { max-width: none; font-size: 11px; }
+  .track-info { margin-top: 8px; font-size: 11px; min-height: 30px; border-radius: 10px; }
+
+  .top-back-button {
+    top: 8px;
+    left: 8px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  .credit { bottom: 4px; right: 8px; font-size: 10px; }
+}
 </style>
 </head>
 
@@ -665,6 +723,14 @@ window.addEventListener('load', () => {
   const volumeControl = document.getElementById('volumeControl');
   if (volumeControl) {
     volumeControl.classList.add('hidden');
+  }
+
+  const trackParam = Number(new URLSearchParams(window.location.search).get('track'));
+  if (!Number.isNaN(trackParam) && trackParam > 0) {
+    const index = trackParam - 1;
+    if (trackFiles[index]) {
+      play(trackFiles[index], index);
+    }
   }
 });
 
