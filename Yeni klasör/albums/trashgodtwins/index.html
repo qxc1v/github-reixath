@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TRASHGODTWINS</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)),
+              url('trashgodtwins_wallpaper.jpg') center/cover fixed;
+  background-blend-mode: overlay;
+  color: #f4f4f4;
+}
+
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+}
+
+.top-back-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+  background: rgba(20, 20, 20, 0.85);
+  color: #f4f4f4;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.top-back-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.header-title {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #e01a20;
+  line-height: 0.95;
+}
+
+.header-subtitle {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  color: #bbb;
+  letter-spacing: 0.2em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 26px;
+}
+
+.cover-card {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cover-art {
+  position: relative;
+  flex: 1;
+  min-height: 360px;
+  background: linear-gradient(180deg, #111 0%, #080808 55%, #020202 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cover-logo {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: #f5f5f5;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.cover-label {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  font-size: 0.95rem;
+  color: #e6e6e6;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cover-note {
+  margin: 22px 24px 24px;
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.8;
+}
+
+.tracklist-card {
+  background: rgba(10, 10, 10, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 26px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tracklist-title {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #aaa;
+  letter-spacing: 0.18em;
+  margin-bottom: 22px;
+}
+
+.track-list {
+  display: grid;
+  gap: 14px;
+}
+
+.track-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.03);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.track-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cpath d='M10 110 L30 90 L22 90 L42 70 L36 70 L60 40 L50 40 L70 10' stroke='%23ff2323' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.55'/%3E%3Cpath d='M40 130 L60 110 L54 110 L74 90 L68 90 L88 60 L82 60 L102 30' stroke='%23ff2323' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.55'/%3E%3Cpath d='M70 110 L90 90 L84 90 L104 70 L98 70 L118 40 L112 40 L132 10' stroke='%23ff2323' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.45'/%3E%3Cpath d='M20 90 L40 70 L34 70 L54 50 L48 50 L68 20' stroke='%23ff2323' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.45'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  mix-blend-mode: screen;
+}
+
+.track-item:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateX(2px);
+}
+
+.track-item:hover::before,
+.track-item.active::before {
+  opacity: 0.18;
+}
+
+.track-item.active {
+  box-shadow: 0 0 0 1px rgba(224, 26, 32, 0.18);
+  border: 1px solid rgba(224, 26, 32, 0.2);
+}
+
+.track-index {
+  font-size: 1.05rem;
+  color: #e01a20;
+  font-weight: 700;
+  text-align: center;
+}
+
+.track-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.track-name {
+  color: #f3f3f3;
+  font-weight: 700;
+  font-size: 0.98rem;
+}
+
+.track-label {
+  color: #999;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.track-item.active {
+  box-shadow: 0 0 0 1px rgba(224, 26, 32, 0.18);
+  border: 1px solid rgba(224, 26, 32, 0.2);
+}
+
+.player-wrap {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.audio-player {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(rgba(5,5,5,0.88), rgba(10,10,10,0.9)),
+              url('trashgodtwins_wallpaper.jpg') center/cover no-repeat;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 0 50px rgba(224, 26, 32, 0.12);
+  padding: 18px 18px 20px;
+}
+
+.player-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.player-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-tag {
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+}
+
+.player-title {
+  color: #f4f4f4;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.player-controls {
+  display: grid;
+  gap: 12px;
+}
+
+.player-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: #f4f4f4;
+  font-size: 24px;
+  cursor: pointer;
+  align-self: start;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.player-btn:hover {
+  background: rgba(255,255,255,0.1);
+  transform: scale(1.02);
+}
+
+.player-progress {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.player-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #e01a20;
+  transition: width 0.1s linear;
+}
+
+.player-volume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.player-volume span {
+  font-size: 0.8rem;
+  color: #aaa;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.player-volume input[type="range"] {
+  width: 100%;
+  accent-color: #e01a20;
+}
+
+audio {
+  display: none;
+}
+
+.credit {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  color: #ff5454;
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 14px rgba(255,84,84,0.75);
+  z-index: 1000;
+  opacity: 0.95;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.credit:hover {
+  opacity: 1;
+  color: #ffd56f;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 940px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding: 20px 16px 40px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .track-item {
+    grid-template-columns: 28px auto;
+  }
+}
+</style>
+</head>
+
+<body>
+<button class="top-back-button" onclick="goBack()">Geri Dön</button>
+<div class="page">
+  <div class="header">
+    <div>
+      <div class="header-title">TRASHGODTWINS</div>
+      <div class="header-subtitle">EP Tracklist</div>
+    </div>
+    <div class="header-subtitle">Fresh. Dark. Lyrics Edition.</div>
+  </div>
+
+  <div class="grid">
+    <section class="cover-card">
+      <div class="cover-art">
+        <img class="cover-image" src="trashgodtwins_wallpaper.jpg" alt="TrashGodTwins Album Cover">
+        <div class="cover-logo">TGT</div>
+        <div class="cover-label">TrashGodTwins</div>
+      </div>
+      <div class="cover-note">A minimal yet aggressive layout built for the new TrashGodTwins EP. The cover and logo area are ready for your artwork files.</div>
+    </section>
+
+    <section class="tracklist-card">
+      <div>
+        <div class="tracklist-title">Tracks</div>
+        <div class="track-list" id="trackList">
+          <div class="track-item" onclick="playTrack(0)">
+            <div class="track-index">1</div>
+            <div class="track-info">
+              <div class="track-name">ÇORBACI</div>
+              <div class="track-label">Lyrics</div>
+            </div>
+          </div>
+          <div class="track-item" onclick="playTrack(1)">
+            <div class="track-index">2</div>
+            <div class="track-info">
+              <div class="track-name">NO FUN!</div>
+              <div class="track-label">Lyrics</div>
+            </div>
+          </div>
+          <div class="track-item" onclick="playTrack(2)">
+            <div class="track-index">3</div>
+            <div class="track-info">
+              <div class="track-name">K4BUS</div>
+              <div class="track-label">Lyrics</div>
+            </div>
+          </div>
+          <div class="track-item" onclick="playTrack(3)">
+            <div class="track-index">4</div>
+            <div class="track-info">
+              <div class="track-name">NO M3RCY</div>
+              <div class="track-label">Lyrics</div>
+            </div>
+          </div>
+          <div class="track-item" onclick="playTrack(4)">
+            <div class="track-index">5</div>
+            <div class="track-info">
+              <div class="track-name">LOKIBOI</div>
+              <div class="track-label">by 13 Killoki & Ohash</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-wrap">
+        <div class="audio-player">
+          <div class="player-panel">
+            <div class="player-meta">
+              <div class="player-tag">Now Playing</div>
+              <div class="player-title" id="currentTitle">Select a track</div>
+            </div>
+            <div class="player-controls">
+              <button class="player-btn" id="playPauseBtn" onclick="togglePlayPause()">▶</button>
+              <div class="player-progress" id="progressBar" onclick="seekTrack(event)">
+                <div class="player-progress-fill" id="progressFill"></div>
+              </div>
+              <div class="player-volume">
+                <span>Vol</span>
+                <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.7" onchange="setVolume(this.value)">
+              </div>
+            </div>
+          </div>
+          <audio id="player"></audio>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥</div>
+
+<script>
+const trackFiles = [
+  'tracks/corbacı.mp3',
+  'tracks/no_fun.mp3',
+  'tracks/k4bus.mp3',
+  'tracks/no_m3rcy.mp3',
+  'tracks/lokiboi.mp3'
+];
+
+const trackTitles = [
+  'ÇORBACI',
+  'NO FUN!',
+  'K4BUS',
+  'NO M3RCY',
+  'LOKIBOI by 13 Killoki & Ohash'
+];
+
+const trackList = document.querySelectorAll('.track-item');
+const player = document.getElementById('player');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const currentTitle = document.getElementById('currentTitle');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
+const volumeSlider = document.getElementById('volumeSlider');
+
+let currentTrackIndex = -1;
+
+function playTrack(index) {
+  if (!trackFiles[index]) return;
+  currentTrackIndex = index;
+  player.src = trackFiles[index];
+  player.play();
+  updateActiveTrack(index);
+  updateCurrentTitle(index);
+  updatePlayButton(true);
+}
+
+function updateActiveTrack(index) {
+  trackList.forEach((item, idx) => {
+    item.classList.toggle('active', idx === index);
+  });
+}
+
+function updateCurrentTitle(index) {
+  currentTitle.textContent = trackTitles[index] || 'Select a track';
+}
+
+function togglePlayPause() {
+  if (!player.src) return;
+  if (player.paused) {
+    player.play();
+  } else {
+    player.pause();
+  }
+}
+
+function setVolume(value) {
+  player.volume = Number(value);
+}
+
+function updatePlayButton(isPlaying) {
+  playPauseBtn.textContent = isPlaying ? '❚❚' : '▶';
+}
+
+function updateProgress() {
+  if (!player.duration) return;
+  const percent = (player.currentTime / player.duration) * 100;
+  progressFill.style.width = percent + '%';
+}
+
+function seekTrack(event) {
+  if (!player.duration) return;
+  const rect = progressBar.getBoundingClientRect();
+  const clickX = event.clientX - rect.left;
+  const percent = clickX / rect.width;
+  player.currentTime = percent * player.duration;
+}
+
+function playNextTrack() {
+  if (currentTrackIndex < 0) return;
+  const nextIndex = currentTrackIndex + 1;
+  if (nextIndex < trackFiles.length) {
+    playTrack(nextIndex);
+  } else {
+    updatePlayButton(false);
+  }
+}
+
+player.volume = 0.7;
+volumeSlider.value = player.volume;
+
+player.addEventListener('play', () => updatePlayButton(true));
+player.addEventListener('pause', () => updatePlayButton(false));
+player.addEventListener('timeupdate', updateProgress);
+player.addEventListener('ended', () => playNextTrack());
+
+function goBack() {
+  window.location.href = '../../START.html';
+}
+</script>
+</body>
+</html>

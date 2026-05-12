@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Album</title>
+
+<style>
+body {
+  background: black;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
+
+.track {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.track:hover {
+  color: red;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ANARKY HIGH</h1>
+
+<div onclick="play('tracks/01.mp3')" class="track">1. Track 1</div>
+<div onclick="play('tracks/02.mp3')" class="track">2. Track 2</div>
+
+<audio id="player" controls></audio>
+
+<br><br>
+<button onclick="goBack()">← Geri</button>
+
+<script>
+function play(src){
+  document.getElementById("player").src = src;
+}
+
+function goBack(){
+  window.location.href = "../../START.html";
+}
+</script>
+
+</body>
+</html>

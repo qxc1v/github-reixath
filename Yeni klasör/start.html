@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>REİXATH</title>
+<link rel="icon" type="image/x-icon" href="reixath.jpg">
+
+<style>
+ html{
+    background-image: url(start_wallpaper.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: black;
+    min-height: 100%;
+    overflow: hidden;
+}
+body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    background: rgba(0,0,0,0.85);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+h1{
+    text-align:center;
+    margin:20px auto 40px;
+    letter-spacing:3px;
+    color: crimson;
+    text-shadow: 0 0 20px rgba(255,0,0,0.4);
+    font-size: 48px;
+    font-weight: 900;
+}
+
+/* ALBUM GRID */
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+}
+
+.album-card {
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    backdrop-filter: blur(15px);
+    position: relative;
+}
+
+.album-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(255,0,0,0.3);
+    border-color: rgba(255,0,0,0.3);
+}
+
+.album-cover {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.album-card:hover .album-cover img {
+    transform: scale(1.1);
+}
+
+.album-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.album-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #d20000, #ff0000);
+    color: white;
+    font-weight: 900;
+    font-size: 18px;
+    padding: 6px 12px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(210,0,0,0.4);
+}
+
+.album-title {
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.album-subtitle {
+    color: #ccc;
+    font-size: 14px;
+    margin: 8px 0 0;
+    opacity: 0.8;
+}
+
+/* MUSIC PLAYER */
+.music-player{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background: rgba(0,0,0,0.9);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:12px;
+    padding:15px 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    backdrop-filter: blur(15px);
+    display:flex;
+    align-items:center;
+    gap:15px;
+    z-index:1000;
+}
+.music-player button{
+    background: linear-gradient(135deg, #d20000, #ff0000);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:8px 16px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(210,0,0,0.4);
+}
+.music-player button:hover{
+    background: linear-gradient(135deg, #b00000, #d20000);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(176,0,0,0.5);
+}
+.music-player input{
+    width:100px;
+    accent-color: #d20000;
+}
+
+/* CREDIT */
+.credit{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    color: crimson;
+    font-size:16px;
+    font-weight:700;
+    text-shadow: 0 0 14px rgba(255,0,0,0.6);
+    z-index:1000;
+    opacity:0.9;
+    cursor:pointer;
+    transition: all 0.3s ease;
+}
+.credit:hover{
+    opacity:1;
+    color:#ffd56f;
+    transform: translateY(-2px);
+}
+
+</style>
+</head>
+
+<body>
+    
+    
+
+<h1>𝓚𝓘̇𝓛𝓛𝓞𝓚𝓘̇</h1>
+<audio id="bgMusic" src="lobi_start_drgrace.mp3" loop autoplay></audio>
+<div class="music-player">
+    <button id="playPauseBtn">Pause</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
+</div>
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">
+    𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥
+</div>
+
+<div class="album-grid">
+    <div class="album-card" onclick="openAlbum('albums/anarky_high/index.html')">
+        <div class="album-cover">
+            <img src="anarky_logo_start.png" alt="Anarky High">
+        </div>
+        <div class="album-info">
+            <div class="album-number">1</div>
+            <h3 class="album-title">ᴀɴᴀʀᴋʏ ʜɪɢʜ</h3>
+            <p class="album-subtitle">Full Album</p>
+        </div>
+    </div>
+
+    <div class="album-card" onclick="openAlbum('albums/lyrica/index.html')">
+        <div class="album-cover">
+            <img src="albums/lyrica/lyrica_logo.jpg" alt="Nollyric@">
+        </div>
+        <div class="album-info">
+            <div class="album-number">2</div>
+            <h3 class="album-title">ɴᴏʟʏʏʀɪᴄ@</h3>
+            <p class="album-subtitle">Full Album</p>
+        </div>
+    </div>
+
+    <div class="album-card" onclick="openAlbum('albums/drgrace/index.html')">
+        <div class="album-cover">
+            <img src="albums/drgrace/himpentegram.jpg" alt="DRG Race">
+        </div>
+        <div class="album-info">
+            <div class="album-number">3</div>
+            <h3 class="album-title">ᴅʀɢ ʀᴀᴄᴇ</h3>
+            <p class="album-subtitle">Full Album</p>
+        </div>
+    </div>
+
+    <div class="album-card" onclick="openAlbum('albums/trashgodtwins/index.html')">
+        <div class="album-cover">
+            <img src="albums/trashgodtwins/trashgodtwins_wallpaper.jpg" alt="Trashgodtwins">
+        </div>
+        <div class="album-info">
+            <div class="album-number">4</div>
+            <h3 class="album-title">ᴛʀᴀsʜɢᴏᴅᴛᴡɪɴs</h3>
+            <p class="album-subtitle">EP Album</p>
+        </div>
+    </div>
+
+    <div class="album-card" onclick="openAlbum('albums/mental_boom/index.html')">
+        <div class="album-cover">
+            <img src="albums/mental_boom/mental_boom_kapak.png" alt="Mental Boom">
+        </div>
+        <div class="album-info">
+            <div class="album-number">5</div>
+            <h3 class="album-title">ᴍᴇɴᴛᴀʟ ʙᴏᴏᴍ</h3>
+            <p class="album-subtitle">EP Album</p>
+        </div>
+    </div>
+
+    <div class="album-card" onclick="openAlbum('albums/anarky_even_higher/index.html')">
+        <div class="album-cover">
+            <img src="anarky_logo_start.png" alt="Anarky Even Higher">
+        </div>
+        <div class="album-info">
+            <div class="album-number">6</div>
+            <h3 class="album-title">ᴀɴᴀʀᴋʏ ᴇᴠᴇɴ ʜɪɢʜᴇʀ</h3>
+            <p class="album-subtitle">Full Album</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function openAlbum(path){
+    window.location.href = path;
+}
+
+const audio = document.getElementById('bgMusic');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const volumeSlider = document.getElementById('volumeSlider');
+
+audio.volume = 0.5;
+playPauseBtn.textContent = 'Pause';
+
+window.addEventListener('load', () => {
+    setTimeout(() => audio.play().catch(() => {}), 500);
+});
+
+window.addEventListener('pageshow', () => {
+    if (localStorage.getItem('musicPlaying') === 'false') {
+        audio.pause();
+        playPauseBtn.textContent = 'Play';
+    } else {
+        playPauseBtn.textContent = 'Pause';
+    }
+});
+
+playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play().catch(() => {});
+        playPauseBtn.textContent = 'Pause';
+        localStorage.setItem('musicPlaying', 'true');
+    } else {
+        audio.pause();
+        playPauseBtn.textContent = 'Play';
+        localStorage.setItem('musicPlaying', 'false');
+    }
+});
+
+volumeSlider.addEventListener('input', () => {
+    audio.volume = volumeSlider.value;
+});
+</script>
+
+</body>
+</html>

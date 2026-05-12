@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Anarky High</title>
+<link rel="icon" type="image/x-icon" href="../../reixath.jpg">
+
+
+<style>
+:root {
+    --red: #d20000;
+    --text: #f5f5f5;
+    --bg: #040404;
+    --panel: rgba(10, 10, 10, 0.92);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, rgba(210,0,0,0.12), transparent 25%),
+                linear-gradient(180deg, #070707 0%, #020202 100%);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 28px;
+    padding: 28px;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.tracklist-panel {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tracklist-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tracklist-header img {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 24px rgba(210,0,0,0.25));
+}
+
+.tracklist-header h1 {
+    margin: 0;
+    font-size: 44px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.tracklist-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.track {
+    background: rgba(14, 14, 14, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.track:hover {
+    transform: translateX(6px);
+    background: rgba(28, 0, 0, 0.95);
+    border-color: rgba(210, 0, 0, 0.24);
+}
+
+.track-number {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 20px;
+    min-width: 38px;
+    text-align: right;
+}
+
+.track-title {
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+.panel-side {
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.panel-side .logo-card {
+    background: rgba(0, 0, 0, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+}
+
+.panel-side .logo-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 40px rgba(210,0,0,0.3));
+}
+
+.player-container {
+    background: rgba(0, 0, 0, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.player-title {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-btn {
+    background: rgba(210, 0, 0, 0.2);
+    border: 1px solid rgba(210, 0, 0, 0.4);
+    color: var(--red);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.player-btn:hover {
+    background: rgba(210, 0, 0, 0.35);
+    border-color: rgba(210, 0, 0, 0.6);
+}
+
+#playBtn {
+    background: rgba(210, 0, 0, 0.3);
+    border: 2px solid var(--red);
+    padding: 12px 16px;
+    font-size: 24px;
+    min-width: 60px;
+}
+
+#playBtn:hover {
+    background: rgba(210, 0, 0, 0.45);
+    border-color: #ffd56f;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), rgba(210, 0, 0, 0.6));
+    border-radius: 2px;
+    width: 0%;
+}
+
+.time-display {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin: 8px 0;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.back-button {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.16);
+    color: var(--text);
+    padding: 12px 20px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.back-button:hover {
+    background: rgba(210, 0, 0, 0.12);
+    border-color: rgba(210, 0, 0, 0.4);
+}
+
+.credit {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    color: #ff5656;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(255,86,86,0.65);
+    z-index: 1000;
+    opacity: 0.95;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.credit:hover {
+    opacity: 1;
+    color: #ffd56f;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 960px) {
+    .page {
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .panel-side {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+    <div class="tracklist-panel">
+        <div class="tracklist-header">
+            <img src="../../anarky_logo_start.png" alt="Anarky Logo">
+            <h1>TRACKLIST</h1>
+        </div>
+
+        <div class="tracklist-grid">
+            <div class="track" onclick="playTrack('tracks/SINKIDX.mp3')">
+                <div class="track-number">1.</div>
+                <div class="track-title">$INKID-X</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/V4VENDETTA.mp3')">
+                <div class="track-number">2.</div>
+                <div class="track-title">V 4 VENDETTA (LOST TRACK)</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/S8NTYPE.mp3')">
+                <div class="track-number">3.</div>
+                <div class="track-title">S8N TYPE SHIT</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/MOSPIT.mp3')">
+                <div class="track-number">4.</div>
+                <div class="track-title">MOSH-PIT</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/SEYTANGP.mp3')">
+                <div class="track-number">5.</div>
+                <div class="track-title">ŞEYTAN GİYER PRADA</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/KORKUMYOK.mp3')">
+                <div class="track-number">6.</div>
+                <div class="track-title">KORKUM YOK</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/SILAH.mp3')">
+                <div class="track-number">7.</div>
+                <div class="track-title">SİLAH</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/XNXX.mp3')">
+                <div class="track-number">8.</div>
+                <div class="track-title">XNXX</div>
+            </div>
+            <div class="track" onclick="void(0)">
+                <div class="track-number">9.</div>
+                <div class="track-title">PHILIP MORRIS (LOST TRACK)</div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/BENIMLEGEL.mp3')">
+                <div class="track-number">10.</div>
+                <div class="track-title">BENİMLE GEL</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-side">
+        <div class="logo-card">
+            <img src="../../anarky_logo_start.png" alt="Anarky Logo">
+        </div>
+        
+        <div class="player-container">
+            <h3 class="player-title">Oynatıcı</h3>
+            
+            <div class="player-controls">
+                <button class="player-btn" onclick="previousTrack()">⏮</button>
+                <button class="player-btn" id="playBtn" onclick="togglePlay()">▶</button>
+                <button class="player-btn" onclick="nextTrack()">⏭</button>
+            </div>
+
+            <div class="progress-bar" id="progressBar" onclick="seek(event)">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 12px; color: rgba(255,255,255,0.5);">🔊</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" onchange="setVolume(this.value)">
+            </div>
+        </div>
+        
+        <button class="back-button" onclick="goBack()">Geri Dön</button>
+    </div>
+</div>
+
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥</div>
+
+<audio id="player"></audio>
+
+<script>
+const tracks = [
+    'tracks/SINKIDX.mp3',
+    'tracks/V4VENDETTA.mp3',
+    'tracks/S8NTYPE.mp3',
+    'tracks/MOSPIT.mp3',
+    'tracks/SEYTANGP.mp3',
+    'tracks/KORKUMYOK.mp3',
+    'tracks/SILAH.mp3',
+    'tracks/XNXX.mp3',
+    null,
+    'tracks/BENIMLEGEL.mp3'
+];
+
+let currentTrackIndex = 0;
+const player = document.getElementById('player');
+const playBtn = document.getElementById('playBtn');
+const progressFill = document.getElementById('progressFill');
+const progressBar = document.getElementById('progressBar');
+const timeDisplay = document.getElementById('timeDisplay');
+const volumeSlider = document.getElementById('volumeSlider');
+
+player.volume = 0.7;
+
+function playTrack(src) {
+    if (!src) return;
+    
+    const trackIndex = tracks.indexOf(src);
+    if (trackIndex !== -1) {
+        currentTrackIndex = trackIndex;
+    }
+    
+    player.src = src;
+    player.play().catch(() => {});
+    playBtn.textContent = '⏸';
+}
+
+function togglePlay() {
+    if (player.paused) {
+        if (!player.src || tracks[currentTrackIndex] === null) {
+            for (let i = 0; i < tracks.length; i++) {
+                if (tracks[i]) {
+                    currentTrackIndex = i;
+                    player.src = tracks[i];
+                    break;
+                }
+            }
+        }
+        player.play().catch(() => {});
+        playBtn.textContent = '⏸';
+    } else {
+        player.pause();
+        playBtn.textContent = '▶';
+    }
+}
+
+function nextTrack() {
+    for (let i = currentTrackIndex + 1; i < tracks.length; i++) {
+        if (tracks[i]) {
+            currentTrackIndex = i;
+            playTrack(tracks[i]);
+            return;
+        }
+    }
+}
+
+function previousTrack() {
+    for (let i = currentTrackIndex - 1; i >= 0; i--) {
+        if (tracks[i]) {
+            currentTrackIndex = i;
+            playTrack(tracks[i]);
+            return;
+        }
+    }
+}
+
+function seek(event) {
+    const rect = progressBar.getBoundingClientRect();
+    const percent = (event.clientX - rect.left) / rect.width;
+    player.currentTime = percent * player.duration;
+}
+
+function setVolume(value) {
+    player.volume = value;
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+player.addEventListener('timeupdate', () => {
+    const percent = (player.currentTime / player.duration) * 100 || 0;
+    progressFill.style.width = percent + '%';
+    timeDisplay.textContent = `${formatTime(player.currentTime)} / ${formatTime(player.duration)}`;
+});
+
+player.addEventListener('ended', nextTrack);
+
+function goBack() {
+    window.location.href = '../../start.html';
+}
+</script>
+</body>
+</html>

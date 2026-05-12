@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DRGRACE</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  background-image: url('drgrace_wallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  padding: 40px;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.left-side {
+  flex: 1;
+  max-width: 400px;
+}
+
+.album-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: left;
+  letter-spacing: 2px;
+}
+
+.tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.track {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  padding-left: 12px;
+}
+
+.track:hover {
+  color: #ff0000;
+  border-left-color: #ff0000;
+  transform: translateX(5px);
+}
+
+.track.playing {
+  color: #ff0000;
+  border-left-color: #ff0000;
+}
+
+.right-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
+}
+
+.cd-container {
+  position: relative;
+  width: 320px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 28px;
+  box-shadow: 0 0 80px rgba(255, 0, 0, 0.22), inset -10px -10px 40px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 18px 24px;
+  backdrop-filter: blur(14px);
+}
+
+.cd-inner {
+  width: 260px;
+  height: 260px;
+  background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(8,8,8,0.92) 100%);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.cd-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  z-index: 5;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 40px rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+
+.cd-button:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cd-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.controls-panel {
+  width: calc(100% - 24px);
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-action {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.player-action:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.14);
+}
+
+.progress-wrapper,
+.volume-control {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #ddd;
+  font-size: 13px;
+}
+
+.progress-wrapper {
+  cursor: pointer;
+}
+
+.progress-bar,
+.volume-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-filled,
+.volume-level {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: rgba(255, 0, 0, 0.9);
+  transition: width 0.1s linear;
+}
+
+.time-labels,
+.volume-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.volume-control {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.volume-control.hidden {
+  display: none;
+}
+
+.track-info {
+  width: calc(100% - 32px);
+  margin: 18px auto 0;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #eee;
+  text-align: center;
+  font-size: 14px;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-info span {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.volume-control span {
+  color: #ccc;
+}
+
+.volume-label-row span {
+  font-size: 12px;
+  color: #bbb;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .cd-container {
+    width: 220px;
+    height: auto;
+  }
+  
+  .cd-inner {
+    width: 170px;
+    height: 170px;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.player-section {
+  width: 100%;
+  padding: 30px 20px;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.top-back-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+  color: white;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.top-back-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+
+audio {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.credit {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  color: #ff5656;
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 14px rgba(255,86,86,0.65);
+  z-index: 1000;
+  opacity: 0.95;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.credit:hover {
+  opacity: 1;
+  color: #ffd56f;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .cd-container {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .cd-inner {
+    width: 170px;
+    height: 170px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="left-side">
+    <div class="album-title">DRGRACE</div>
+    <div class="tracks-list">
+      <div onclick="play('tracks/intro_nitro.mp3', 0)" class="track">1. NITRO (INTRO)</div>
+      <div onclick="play('tracks/corbaci_2.mp3', 1)" class="track">2. ÇORBACI 2</div>
+      <div onclick="play('tracks/oxybitti.mp3', 2)" class="track">3. OXY BITTI</div>
+      <div onclick="play('tracks/dreykotatilde2.mp3', 3)" class="track">4. DREYKO TATİLDE 2</div>
+      <div onclick="play('tracks/underground_prodigy.mp3', 4)" class="track">5. UNDERGROUND PRODIGY</div>
+      <div onclick="play('tracks/verifieddrgrace.mp3', 5)" class="track">6. VERIFIED DRG RACE</div>
+      <div onclick="play('tracks/nascar.mp3', 6)" class="track">7. NASCAR</div>
+      <div onclick="play('tracks/sehrim_bereketli.mp3', 7)" class="track">8. ŞEHRİM BEREKETLİ (Ba Sing Se)</div>
+      <div onclick="play('tracks/locomotif.mp3', 8)" class="track">9. LOCOMOTIF</div>
+      <div onclick="play('tracks/darth_maul.mp3', 9)" class="track">10. DARTH MAUL (TRASH GOD)</div>
+      <div onclick="play('tracks/flag_outro.mp3', 10)" class="track">11. FLAG (OUTRO)</div>
+    </div>
+  </div>
+
+  <div class="right-side">
+    <div class="cd-container">
+      <div class="cd-inner" id="cdInner">
+        <img class="cd-image" id="cdImage" src="himpentegram.jpg" alt="Album Cover">
+      </div>
+      <div class="track-info">
+        <span id="trackTitle">Şarkı seç</span>
+      </div>
+      <div class="controls-panel">
+          <div class="control-buttons">
+          <button class="player-action" onclick="prevTrack()">⏮</button>
+          <button class="player-action play-toggle" onclick="togglePlayPause()">▶</button>
+          <button class="player-action" onclick="nextTrack()">⏭</button>
+          <button class="player-action" onclick="toggleVolumeControl()">🔊</button>
+        </div>
+        <div class="progress-wrapper" id="progressWrapper" onclick="seekAudio(event)">
+          <div class="progress-bar">
+            <div class="progress-filled" id="progressFilled"></div>
+          </div>
+          <div class="time-labels">
+            <span id="currentTime">0:00</span>
+            <span id="durationTime">0:00</span>
+          </div>
+        </div>
+        <div class="volume-control hidden" id="volumeControl" onclick="setVolumeByClick(event)">
+          <div class="volume-label-row">
+            <span>Volume</span>
+            <span id="volumeLabel">70%</span>
+          </div>
+          <div class="volume-bar" id="volumeBar">
+            <div class="volume-level" id="volumeLevel"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="top-back-button" onclick="goBack()">Geri Dön</button>
+
+<div class="player-section">
+  <audio id="player"></audio>
+</div>
+
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥</div>
+
+<script>
+const trackFiles = [
+  'tracks/intro_nitro.mp3',
+  'tracks/corbaci_2.mp3',
+  'tracks/oxybitti.mp3',
+  'tracks/dreykotatilde2.mp3',
+  'tracks/underground_prodigy.mp3',
+  'tracks/verifieddrgrace.mp3',
+  'tracks/nascar.mp3',
+  'tracks/sehrim_bereketli.mp3',
+  'tracks/locomotif.mp3',
+  'tracks/darth_maul.mp3',
+  'tracks/flag_outro.mp3'
+];
+
+const trackTitles = [
+  '1. NITRO (INTRO)',
+  '2. ÇORBACI 2',
+  '3. OXY BITTI',
+  '4. DREYKO TATİLDE 2',
+  '5. UNDERGROUND PRODIGY',
+  '6. VERIFIED DRG RACE',
+  '7. NASCAR',
+  '8. ŞEHRİM BEREKETLİ (Ba Sing Se)',
+  '9. LOCOMOTIF',
+  '10. DARTH MAUL (TRASH GOD)',
+  '11. FLAG (OUTRO)'
+];
+
+let currentTrackIndex = -1;
+let isVolumeDragging = false;
+let isSeeking = false;
+
+function play(src, trackIndex) {
+  const player = document.getElementById("player");
+  player.src = src;
+  player.play();
+  currentTrackIndex = trackIndex;
+  markPlayingTrack(trackIndex);
+  updatePlayButton(true);
+}
+
+function markPlayingTrack(trackIndex) {
+  document.querySelectorAll('.track').forEach(track => track.classList.remove('playing'));
+  if (trackIndex >= 0) {
+    document.querySelectorAll('.track')[trackIndex].classList.add('playing');
+  }
+  updateTrackTitle(trackIndex);
+}
+
+function updateTrackTitle(trackIndex) {
+  const title = trackTitles[trackIndex] || 'Şarkı seç';
+  const titleElement = document.getElementById('trackTitle');
+  if (titleElement) {
+    titleElement.textContent = title;
+  }
+}
+
+function toggleVolumeControl() {
+  const volumeControl = document.getElementById('volumeControl');
+  if (!volumeControl) return;
+  volumeControl.classList.toggle('hidden');
+}
+
+function prevTrack() {
+  if (currentTrackIndex <= 0) {
+    if (currentTrackIndex === -1) {
+      return;
+    }
+    play(trackFiles[0], 0);
+    return;
+  }
+  play(trackFiles[currentTrackIndex - 1], currentTrackIndex - 1);
+}
+
+function nextTrack() {
+  if (currentTrackIndex < 0) {
+    if (trackFiles.length > 0) {
+      play(trackFiles[0], 0);
+    }
+    return;
+  }
+  const nextIndex = currentTrackIndex + 1;
+  if (nextIndex < trackFiles.length) {
+    play(trackFiles[nextIndex], nextIndex);
+  }
+}
+
+function togglePlayPause() {
+  const player = document.getElementById("player");
+  if (!player.src) {
+    if (trackFiles.length > 0) {
+      play(trackFiles[0], 0);
+    }
+    return;
+  }
+  if (player.paused) {
+    player.play();
+  } else {
+    player.pause();
+  }
+}
+
+function setVolume(volume) {
+  const player = document.getElementById('player');
+  volume = Math.min(1, Math.max(0, volume));
+  player.volume = volume;
+  updateVolumeIndicator(volume);
+}
+
+function setVolumeByClick(event) {
+  const bar = document.getElementById('volumeBar');
+  const rect = bar.getBoundingClientRect();
+  const volume = (event.clientX - rect.left) / rect.width;
+  setVolume(volume);
+}
+
+function startVolumeDrag(event) {
+  isVolumeDragging = true;
+  setVolumeByClick(event);
+}
+
+function stopVolumeDrag() {
+  isVolumeDragging = false;
+}
+
+function moveVolumeDrag(event) {
+  if (!isVolumeDragging) return;
+  setVolumeByClick(event);
+}
+
+function seekAudio(event) {
+  const bar = document.getElementById('progressWrapper');
+  const rect = bar.getBoundingClientRect();
+  const percent = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+  const player = document.getElementById('player');
+  if (!isNaN(player.duration) && player.duration) {
+    player.currentTime = percent * player.duration;
+  }
+}
+
+function startSeek(event) {
+  isSeeking = true;
+  seekAudio(event);
+}
+
+function stopSeek() {
+  isSeeking = false;
+}
+
+function updateProgress() {
+  const player = document.getElementById('player');
+  const progress = player.duration ? (player.currentTime / player.duration) : 0;
+  const progressFill = document.getElementById('progressFilled');
+  progressFill.style.width = (progress * 100) + '%';
+  document.getElementById('currentTime').textContent = formatTime(player.currentTime);
+  document.getElementById('durationTime').textContent = formatTime(player.duration || 0);
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds) || seconds === Infinity) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${secs}`;
+}
+
+function updateVolumeIndicator(volume) {
+  const level = document.getElementById('volumeLevel');
+  const label = document.getElementById('volumeLabel');
+  if (!level || !label) return;
+  const percent = Math.round(volume * 100);
+  level.style.width = percent + '%';
+  label.textContent = percent + '%';
+}
+
+function updatePlayButton() {
+  const buttons = document.querySelectorAll('.play-toggle');
+  const player = document.getElementById('player');
+  buttons.forEach(button => {
+    button.textContent = player && !player.paused ? '❚❚' : '▶';
+  });
+}
+
+document.getElementById('player').addEventListener('pause', updatePlayButton);
+document.getElementById('player').addEventListener('play', updatePlayButton);
+document.getElementById('player').addEventListener('ended', nextTrack);
+document.getElementById('player').addEventListener('timeupdate', updateProgress);
+document.getElementById('player').addEventListener('durationchange', updateProgress);
+
+document.getElementById('cdInner').addEventListener('wheel', function(event) {
+  event.preventDefault();
+  setVolume(event.deltaY < 0 ? Math.min(1, document.getElementById('player').volume + 0.05) : Math.max(0, document.getElementById('player').volume - 0.05));
+}, { passive: false });
+
+document.getElementById('volumeControl').addEventListener('mousedown', function(event) {
+  startVolumeDrag(event);
+});
+
+document.addEventListener('mousemove', function(event) {
+  moveVolumeDrag(event);
+});
+
+document.addEventListener('mouseup', function() {
+  stopVolumeDrag();
+});
+
+document.getElementById('progressWrapper').addEventListener('mousedown', function(event) {
+  startSeek(event);
+});
+
+document.addEventListener('mouseup', function() {
+  stopSeek();
+});
+
+document.addEventListener('mousemove', function(event) {
+  if (isSeeking) {
+    seekAudio(event);
+  }
+});
+
+window.addEventListener('load', () => {
+  const player = document.getElementById('player');
+  player.volume = 0.7;
+  updateVolumeIndicator(player.volume);
+  updatePlayButton();
+  const volumeControl = document.getElementById('volumeControl');
+  if (volumeControl) {
+    volumeControl.classList.add('hidden');
+  }
+});
+
+function goBack() {
+  window.location.href = "../../START.html";
+}
+</script>
+
+</body>
+</html>

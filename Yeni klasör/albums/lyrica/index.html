@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Lyrica</title>
+<link rel="icon" type="image/x-icon" href="../../reixath.jpg">
+
+
+<style>
+:root {
+    --accent: #8c56ff;
+    --text: #f5f5f5;
+    --panel: rgba(12, 8, 26, 0.92);
+    --border: rgba(155, 95, 255, 0.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #070712;
+    background: linear-gradient(rgba(7, 7, 12, 0.62), rgba(5, 1, 13, 0.72)),
+                url('./lyrica_back_image.jpg') center/cover fixed no-repeat;
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.tracklist-panel {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.tracklist-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.tracklist-header img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 24px rgba(140,86,255,0.3));
+}
+
+.tracklist-header h1 {
+    margin: 0;
+    font-size: 38px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.tracklist-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.track {
+    background: rgba(12, 7, 30, 0.72);
+    border: none;
+        padding: 10px 14px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .track:hover {
+        transform: translateX(1px);
+        background: rgba(24, 12, 56, 0.88);
+    }
+
+    .track-number {
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 16px;
+        min-width: 28px;
+        text-align: right;
+    }
+
+    .track-text {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+    }
+
+    .track-title {
+        font-size: 18px;
+        line-height: 1.15;
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .track-meta {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.82);
+}
+
+.panel-side {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.panel-side .logo-card {
+    background: rgba(0, 0, 0, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 260px;
+}
+
+.panel-side .logo-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 32px rgba(140,86,255,0.3));
+}
+
+.player-container {
+    background: rgba(10, 8, 30, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    }
+
+.player-title {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-btn {
+    background: rgba(140, 86, 255, 0.22);
+    border: 1px solid rgba(140, 86, 255, 0.42);
+    color: var(--accent);
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    min-width: 44px;
+    text-align: center;
+}
+
+#playBtn {
+    background: rgba(140, 86, 255, 0.34);
+    border: 2px solid var(--accent);
+    padding: 14px 18px;
+    font-size: 24px;
+    min-width: 70px;
+}
+
+.player-btn:hover {
+    background: rgba(140, 86, 255, 0.45);
+    border-color: #f2e5ff;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), rgba(140,86,255,0.6));
+    border-radius: 2px;
+    width: 0%;
+}
+
+.time-display {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    text-align: center;
+    margin: 8px 0;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.back-button {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.16);
+    color: var(--text);
+    padding: 12px 20px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.back-button:hover {
+    background: rgba(140, 86, 255, 0.12);
+    border-color: rgba(140, 86, 255, 0.4);
+}
+
+.credit {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    color: #9f70ff;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(159,112,255,0.6);
+    z-index: 1000;
+    opacity: 0.95;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.credit:hover {
+    opacity: 1;
+    color: #f2e5ff;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 960px) {
+    .page {
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .panel-side {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+    <div class="tracklist-panel">
+        <div class="tracklist-header">
+            <img src="lyrica_logo.jpg" alt="Lyrica Logo">
+            <h1>TRACKLIST</h1>
+        </div>
+
+        <div class="tracklist-grid">
+            <div class="track" onclick="playTrack('tracks/lyyric.mp3')">
+                <div class="track-number">1.</div>
+                <div class="track-text">
+                    <div class="track-title">LYYRICA (ORIGINAL 150MG)</div>
+                    <div class="track-meta">feat. SWIRF • produced by GOATY, SOYLU</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/loki_ssh.mp3')">
+                <div class="track-number">2.</div>
+                <div class="track-text">
+                    <div class="track-title">SARI SAÇLI HOE</div>
+                    <div class="track-meta">feat. QIMP, PER • produced by KACHI</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/yardımettanrim.mp3')">
+                <div class="track-number">3.</div>
+                <div class="track-text">
+                    <div class="track-title">YARDIM ET TANRIM</div>
+                    <div class="track-meta">feat. KUTY, EGE BORAN • produced by GOATY</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/pembeyalanlar.mp3')">
+                <div class="track-number">4.</div>
+                <div class="track-text">
+                    <div class="track-title">PEMBE YALANLAR</div>
+                    <div class="track-meta">feat. ŞEHİNŞAH • produced by EGE TAŞTAN, CVCTUS, QIMP</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/duydugundogru.mp3')">
+                <div class="track-number">5.</div>
+                <div class="track-text">
+                    <div class="track-title">DUYDUĞUN DOĞRU</div>
+                    <div class="track-meta">produced by TVTO, WOX</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/いただきます.mp3')">
+                <div class="track-number">6.</div>
+                <div class="track-text">
+                    <div class="track-title">ITADAKIMASU (INTERLUDE)</div>
+                    <div class="track-meta">feat. RECKOL • produced by RECKOL</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/07.mp3')">
+                <div class="track-number">7.</div>
+                <div class="track-text">
+                    <div class="track-title">"YAKINDA" MOSPHIT</div>
+                    <div class="track-meta">feat. BEGE, YUNG OUZO, DEHA INC. • produced by CVCTUS</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/tedbuny.mp3')">
+                <div class="track-number">8.</div>
+                <div class="track-text">
+                    <div class="track-title">TED BUNDY</div>
+                    <div class="track-meta">produced by TVTO, WOX</div>
+                </div>
+            </div>
+            <div class="track" onclick="playTrack('tracks/fulltimeanarky.mp3')">
+                <div class="track-number">9.</div>
+                <div class="track-text">
+                    <div class="track-title">FULL-TIME ANARKY</div>
+                    <div class="track-meta">produced by ZETSU</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-side">
+        <div class="logo-card">
+            <img src="lyrica_logo.jpg" alt="Lyrica Logo">
+        </div>
+
+        <div class="player-container">
+            <h3 class="player-title">Oynatıcı</h3>
+            <div class="player-controls">
+                <button class="player-btn" onclick="previousTrack()">⏮</button>
+                <button class="player-btn" id="playBtn" onclick="togglePlay()">▶</button>
+                <button class="player-btn" onclick="nextTrack()">⏭</button>
+            </div>
+            <div class="progress-bar" id="progressBar" onclick="seek(event)">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 12px; color: rgba(255,255,255,0.5);">🔊</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" onchange="setVolume(this.value)">
+            </div>
+        </div>
+
+        <button class="back-button" onclick="goBack()">Geri Dön</button>
+    </div>
+</div>
+
+<div class="credit" onclick="window.open('https://www.instagram.com/reixath/', '_blank')">𝔡𝔢𝔰𝔦𝔤𝔫 𝔟𝔶 ℜ𝔢𝔦𝔵𝔞𝔱𝔥</div>
+
+<audio id="player"></audio>
+
+<script>
+const tracks = [
+    'tracks/lyyric.mp3',
+    'tracks/loki_ssh.mp3',
+    'tracks/yardımettanrim.mp3',
+    'tracks/pembeyalanlar.mp3',
+    'tracks/duydugundogru.mp3',
+    'tracks/いただきます.mp3',
+    'tracks/07.mp3',
+    'tracks/tedbuny.mp3',
+    'tracks/fulltimeanarky.mp3'
+];
+
+let currentTrackIndex = 0;
+const player = document.getElementById('player');
+const playBtn = document.getElementById('playBtn');
+const progressFill = document.getElementById('progressFill');
+const progressBar = document.getElementById('progressBar');
+const timeDisplay = document.getElementById('timeDisplay');
+const volumeSlider = document.getElementById('volumeSlider');
+
+player.volume = 0.7;
+
+function playTrack(src) {
+    if (!src) return;
+
+    const trackIndex = tracks.indexOf(src);
+    if (trackIndex !== -1) {
+        currentTrackIndex = trackIndex;
+    }
+
+    player.src = src;
+    player.play().catch(() => {});
+    playBtn.textContent = '⏸';
+}
+
+function togglePlay() {
+    if (player.paused) {
+        if (!player.src || tracks[currentTrackIndex] === null) {
+            for (let i = 0; i < tracks.length; i++) {
+                if (tracks[i]) {
+                    currentTrackIndex = i;
+                    player.src = tracks[i];
+                    break;
+                }
+            }
+        }
+        player.play().catch(() => {});
+        playBtn.textContent = '⏸';
+    } else {
+        player.pause();
+        playBtn.textContent = '▶';
+    }
+}
+
+function nextTrack() {
+    for (let i = currentTrackIndex + 1; i < tracks.length; i++) {
+        if (tracks[i]) {
+            currentTrackIndex = i;
+            playTrack(tracks[i]);
+            return;
+        }
+    }
+}
+
+function previousTrack() {
+    for (let i = currentTrackIndex - 1; i >= 0; i--) {
+        if (tracks[i]) {
+            currentTrackIndex = i;
+            playTrack(tracks[i]);
+            return;
+        }
+    }
+}
+
+function seek(event) {
+    const rect = progressBar.getBoundingClientRect();
+    const percent = (event.clientX - rect.left) / rect.width;
+    player.currentTime = percent * player.duration;
+}
+
+function setVolume(value) {
+    player.volume = value;
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+player.addEventListener('timeupdate', () => {
+    const percent = (player.currentTime / player.duration) * 100 || 0;
+    progressFill.style.width = percent + '%';
+    timeDisplay.textContent = `${formatTime(player.currentTime)} / ${formatTime(player.duration)}`;
+});
+
+player.addEventListener('ended', nextTrack);
+
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') {
+        event.preventDefault();
+        togglePlay();
+    } else if (event.code === 'ArrowRight') {
+        event.preventDefault();
+        nextTrack();
+    } else if (event.code === 'ArrowLeft') {
+        event.preventDefault();
+        previousTrack();
+    }
+});
+
+function goBack() {
+    window.location.href = '../../start.html';
+}
+</script>
+</body>
+</html>
