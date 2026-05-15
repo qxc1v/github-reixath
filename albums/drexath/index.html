@@ -194,16 +194,12 @@
       <div>
         <h1 class="title">Tracklist</h1>
         <div class="tracklist" id="trackList">
-          <button class="track" onclick="playTrack(0)">01. Track Name 01</button>
-          <button class="track" onclick="playTrack(1)">02. Track Name 02</button>
-          <button class="track" onclick="playTrack(2)">03. Track Name 03</button>
-          <button class="track" onclick="playTrack(3)">04. Track Name 04</button>
-          <button class="track" onclick="playTrack(4)">05. Track Name 05</button>
-          <button class="track" onclick="playTrack(5)">06. Track Name 06</button>
-          <button class="track" onclick="playTrack(6)">07. Track Name 07</button>
-          <button class="track" onclick="playTrack(7)">08. Track Name 08</button>
-          <button class="track" onclick="playTrack(8)">09. Track Name 09</button>
-          <button class="track" onclick="playTrack(9)">10. Track Name 10</button>
+          <button class="track" onclick="playTrack(0)">01. ##Bittim Gözlerine</button>
+          <button class="track" onclick="playTrack(1)">02. Harbiden Şekermiş</button>
+          <button class="track" onclick="playTrack(2)">03. Alla Beni Pulla Beni</button>
+          <button class="track" onclick="playTrack(3)">04. Dilerim ki </button>
+          <button class="track" onclick="playTrack(4)">05. Aşk Yok Olmak</button>
+          
         </div>
       </div>
 
@@ -232,16 +228,11 @@
 
   <script>
     const tracks = [
-      { title: "Track Name 01", src: null },
-      { title: "Track Name 02", src: null },
-      { title: "Track Name 03", src: null },
-      { title: "Track Name 04", src: null },
-      { title: "Track Name 05", src: null },
-      { title: "Track Name 06", src: null },
-      { title: "Track Name 07", src: null },
-      { title: "Track Name 08", src: null },
-      { title: "Track Name 09", src: null },
-      { title: "Track Name 10", src: null }
+      { title: "##Bittim Gözlerine",  src: 'tracklist/bittimgozlerine.mp3' },
+      { title: "Harbiden Şekermiş", src: 'tracklist/harbidensekermis.mp3' },
+      { title: "Alla Beni Pulla Beni", src: 'tracklist/abpb.mp3' },
+      { title: "Dilerim ki", src: 'tracklist/dilerimki.mp3' },
+      { title: "Aşk Yok Olmak", src: 'tracklist/askyokolmak.mp3' },
     ];
 
     const player = document.getElementById("player");
@@ -253,7 +244,7 @@
     const trackButtons = Array.from(document.querySelectorAll(".track"));
     let currentTrackIndex = -1;
 
-    player.volume = 0.7;
+    player.volume = 1;
 
     function setActive(index) {
       trackButtons.forEach((btn, i) => btn.classList.toggle("active", i === index));
@@ -329,7 +320,7 @@
     player.addEventListener("pause", () => updatePlayButton(false));
 
     function goBack() {
-      window.location.href = "../../start.html";
+      window.location.href = "../../index.html";
     }
   </script>
 </body>
